@@ -1,0 +1,89 @@
+<Window
+    x:Class="AvaloniaMemoryLeakWhenSettingCommandInStyle.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:AvaloniaMemoryLeakWhenSettingCommandInStyle.ViewModels"
+    Title="AvaloniaMemoryLeakWhenSettingCommandInStyle"
+    Width="800"
+    Height="450"
+    MinWidth="800"
+    MinHeight="450"
+    Padding="12"
+    x:DataType="vm:MainViewModel"
+    Icon="/Assets/avalonia-logo.ico"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <UniformGrid ColumnSpacing="12" Columns="2">
+        <Border Background="#40808080">
+            <DockPanel VerticalSpacing="12">
+                <TextBlock
+                    DockPanel.Dock="Top"
+                    FontWeight="Bold"
+                    Text="Setting command in style (leak)" />
+
+                <Button
+                    VerticalAlignment="Center"
+                    Command="{Binding RefreshLeakedItemsCommand}"
+                    Content="Refresh"
+                    DockPanel.Dock="Top" />
+
+                <ListBox ItemsSource="{Binding LeakedItems}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="vm:ItemViewModel">
+                            <Border Padding="12" Background="#40808080">
+                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                    <StackPanel.Styles>
+                                        <Style Selector="Button">
+                                            <Setter Property="Command" Value="{Binding ShowNumberCommand}" />
+                                        </Style>
+                                    </StackPanel.Styles>
+
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Number}" />
+                                    <Button />
+                                    <Button />
+                                    <Button />
+                                    <Button />
+                                    <Button />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
+
+        <Border Background="#40808080">
+            <DockPanel VerticalSpacing="12">
+                <TextBlock
+                    DockPanel.Dock="Top"
+                    FontWeight="Bold"
+                    Text="Setting command in button (no leak)" />
+
+                <Button
+                    VerticalAlignment="Center"
+                    Command="{Binding RefreshNoLeakedItemsCommand}"
+                    Content="Refresh"
+                    DockPanel.Dock="Top" />
+
+                <ListBox ItemsSource="{Binding NoLeakedItems}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="vm:ItemViewModel">
+                            <Border Padding="12" Background="#40808080">
+                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Number}" />
+                                    <Button Command="{Binding ShowNumberCommand}" />
+                                    <Button Command="{Binding ShowNumberCommand}" />
+                                    <Button Command="{Binding ShowNumberCommand}" />
+                                    <Button Command="{Binding ShowNumberCommand}" />
+                                    <Button Command="{Binding ShowNumberCommand}" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
+    </UniformGrid>
+</Window>
